@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Car.io - Virtual Car Builder</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <!-- Auth Section -->
+        <section id="auth-section" class="auth-section">
+            <div class="auth-container">
+                <div class="auth-header">
+                    <h1>🏎️ Car.io</h1>
+                    <p>Virtual Car Builder</p>
+                </div>
+                
+                <div class="auth-tabs">
+                    <button class="auth-tab active" data-tab="login">Login</button>
+                    <button class="auth-tab" data-tab="register">Register</button>
+                </div>
+
+                <!-- Login Form -->
+                <form id="login-form" class="auth-form active">
+                    <div class="form-group">
+                        <label for="login-email">Email</label>
+                        <input type="email" id="login-email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="login-password">Password</label>
+                        <input type="password" id="login-password" required>
+                    </div>
+                    <button type="submit" class="btn-primary">Login</button>
+                </form>
+
+                <!-- Register Form -->
+                <form id="register-form" class="auth-form">
+                    <div class="form-group">
+                        <label for="register-username">Username</label>
+                        <input type="text" id="register-username" required minlength="3" maxlength="30">
+                    </div>
+                    <div class="form-group">
+                        <label for="register-email">Email</label>
+                        <input type="email" id="register-email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="register-password">Password</label>
+                        <input type="password" id="register-password" required minlength="6">
+                    </div>
+                    <button type="submit" class="btn-primary">Register</button>
+                </form>
+
+                <div id="auth-message" class="auth-message"></div>
+            </div>
+        </section>
+
+        <!-- Main App (Hidden until logged in) -->
+        <main id="main-app" class="hidden">
+            <header>
+                <div class="header-content">
+                    <div class="header-left">
+                        <h1>🏎️ Car.io</h1>
+                        <p>Upload your car and customize it with performance parts</p>
+                    </div>
+                    <div class="header-right">
+                        <div class="user-info">
+                            <span id="username-display">User</span>
+                            <button id="logout-btn" class="btn-secondary">Logout</button>
+                        </div>
+                        <button id="my-builds-btn" class="btn-secondary">My Builds</button>
+                        <button id="gallery-btn" class="btn-secondary">Gallery</button>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Upload Section -->
+            <section id="upload-section" class="upload-section">
+                <div class="upload-area" id="upload-area">
+                    <div class="upload-content">
+                        <div class="upload-icon">📸</div>
+                        <h3>Upload Your Car Photo</h3>
+                        <p>Drag and drop or click to select</p>
+                        <input type="file" id="file-input" accept="image/*" hidden>
+                        <button class="btn-primary" onclick="document.getElementById('file-input').click()">Choose Photo</button>
+                    </div>
+                </div>
+                
+                <!-- Car Details Form -->
+                <div class="car-details-form" id="car-details-form">
+                    <h3>Car Information</h3>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="car-make">Make</label>
+                            <select id="car-make" required>
+                                <option value="">Select Make</option>
+                                <option value="Toyota">Toyota</option>
+                                <option value="Honda">Honda</option>
+                                <option value="Ford">Ford</option>
+                                <option value="Chevrolet">Chevrolet</option>
+                                <option value="BMW">BMW</option>
+                                <option value="Mercedes-Benz">Mercedes-Benz</option>
+                                <option value="Audi">Audi</option>
+                                <option value="Volkswagen">Volkswagen</option>
+                                <option value="Mazda">Mazda</option>
+                                <option value="Nissan">Nissan</option>
+                                <option value="Hyundai">Hyundai</option>
+                                <option value="Kia">Kia</option>
+                                <option value="Subaru">Subaru</option>
+                                <option value="Mitsubishi">Mitsubishi</option>
+                                <option value="Lexus">Lexus</option>
+                                <option value="Infiniti">Infiniti</option>
+                                <option value="Acura">Acura</option>
+                                <option value="Tesla">Tesla</option>
+                                <option value="Porsche">Porsche</option>
+                                <option value="Ferrari">Ferrari</option>
+                                <option value="Lamborghini">Lamborghini</option>
+                                <option value="McLaren">McLaren</option>
+                                <option value="Bugatti">Bugatti</option>
+                                <option value="Other">Other</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="car-model">Model & Generation</label>
+                            <select id="car-model" required>
+                                <option value="">Select Make First</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="car-year">Year</label>
+                            <input type="number" id="car-year" placeholder="e.g., 2023" min="1900" max="2025" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="car-color">Color</label>
+                            <input type="text" id="car-color" placeholder="e.g., Red, Black, Silver" required>
+                        </div>
+                    </div>
+                    <button type="button" id="continue-to-build" class="btn-primary">Continue to Build</button>
+                </div>
+            </section>
+
+            <!-- Car Display Section -->
+            <section id="car-section" class="car-section hidden">
+                <div class="car-display">
+                    <div class="car-image-container">
+                        <img id="car-image" src="" alt="Your car">
+                        <div class="car-overlay" id="car-overlay"></div>
+                    </div>
+                    <div class="car-info-display">
+                        <h3 id="car-title">Your Car</h3>
+                        <div class="car-specs">
+                            <span id="car-year-display" class="car-spec">Year</span>
+                            <span id="car-make-display" class="car-spec">Make</span>
+                            <span id="car-model-display" class="car-spec">Model</span>
+                            <span id="car-color-display" class="car-spec">Color</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Car Stats -->
+                <div class="stats-panel">
+                    <h3>Car Specifications</h3>
+                    <div class="stats-grid">
+                        <div class="stat-item">
+                            <span class="stat-label">Horsepower</span>
+                            <span class="stat-value" id="stat-hp">200 HP</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-label">Torque</span>
+                            <span class="stat-value" id="stat-torque">200 lb-ft</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-label">Weight</span>
+                            <span class="stat-value" id="stat-weight">3000 lbs</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-label">Camber</span>
+                            <span class="stat-value" id="stat-camber">0°</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-label">Height</span>
+                            <span class="stat-value" id="stat-height">Stock</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-label">Top Speed</span>
+                            <span class="stat-value" id="stat-speed">130 mph</span>
+                        </div>
+                    </div>
+                    <div class="build-actions">
+                        <input type="text" id="build-name" placeholder="Enter build name..." class="build-name-input">
+                        <button id="save-build-btn" class="btn-primary">Save Build</button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Parts Selection Section -->
+            <section id="parts-section" class="parts-section hidden">
+                <h2>Choose Your Parts</h2>
+                
+                <div class="parts-categories">
+                    <div class="category-tabs">
+                        <button class="category-tab active" data-category="engine">Engine</button>
+                        <button class="category-tab" data-category="suspension">Suspension</button>
+                        <button class="category-tab" data-category="exhaust">Exhaust</button>
+                        <button class="category-tab" data-category="wheels">Wheels</button>
+                        <button class="category-tab" data-category="body">Body Kit</button>
+                    </div>
+
+                    <div class="parts-grid" id="parts-grid">
+                        <!-- Parts will be dynamically loaded here -->
+                    </div>
+                </div>
+
+                <!-- Selected Parts Summary -->
+                <div class="selected-parts">
+                    <h3>Selected Parts</h3>
+                    <div id="selected-parts-list" class="selected-parts-list">
+                        <p class="no-parts">No parts selected yet</p>
+                    </div>
+                    <div class="total-cost">
+                        <span>Total Cost: $<span id="total-cost">0</span></span>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <!-- My Builds Modal -->
+        <div id="my-builds-modal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2>My Car Builds</h2>
+                    <button class="close-modal">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <div id="my-builds-list" class="builds-list">
+                        <!-- Builds will be loaded here -->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Gallery Modal -->
+        <div id="gallery-modal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2>Community Gallery</h2>
+                    <button class="close-modal">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <div id="gallery-list" class="builds-list">
+                        <!-- Gallery builds will be loaded here -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
